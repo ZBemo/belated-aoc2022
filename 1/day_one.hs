@@ -1,7 +1,7 @@
 
 module Main where
 
-import Data.List (groupBy)
+import Data.List (groupBy, sort)
 
 removeCarriage :: String -> String
 removeCarriage = filter (not . (== '\r'))
@@ -12,6 +12,7 @@ splitEmpty = map (filter (not . null)) . groupBy (\_ x -> not $ null x) . lines
 sums :: [[String]] -> [Integer]
 sums = map (sum . (map read))
 
+
 -- maximum :: Ord a => [a] -> a
 -- maximum list = foldr 
 --   (\acc elem -> if acc < elem then elem else acc) 
@@ -20,5 +21,5 @@ sums = map (sum . (map read))
 main :: IO ()
 main = do
   input <- readFile "input"  
-  print $ maximum . sums . splitEmpty . removeCarriage $ input
+  print $ sum . take 3 . reverse . sort . sums . splitEmpty . removeCarriage $ input
   return ()
