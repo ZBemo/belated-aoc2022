@@ -9,6 +9,10 @@ removeCarriage = filter (/= '\r')
 contains :: Range -> Range -> Bool
 contains (Range i11 i12) (Range i21 i22) = i11 <= i21 && i12 >= i22
 
+overlaps :: Range -> Range -> Bool
+overlaps (Range i11 i12) (Range i21 i22) = (i21 >= i11 && i21 <= i12) || (i22 >= i11 && i22 <= i12)
+
+
 unwrap :: Maybe a -> a 
 unwrap a = case a of 
  Nothing -> error "Unwrap called on Nothing"
@@ -33,7 +37,7 @@ stringToRanges = (map readRangePair) . (map splitComma) . lines . removeCarriage
 
 getOverlap :: [(Range, Range)] -> [Bool]
 getOverlap = map eitherContains
-  where eitherContains = \(fst, snd) -> (contains fst snd) || (contains snd fst)
+  where eitherContains = \(fst, snd) -> (overlaps fst snd) || (overlaps snd fst)
 
 main :: IO ()
 main = do
