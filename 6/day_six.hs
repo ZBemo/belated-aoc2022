@@ -13,10 +13,10 @@ allUnique = not . any (\c -> c > 1) . consolidate Map.empty
 
 findUnique :: String -> Int -> Int
 findUnique [] _ = error "Found no unique four length token"
-findUnique s index = if allUnique $ take 4 s then index else findUnique (tail s) (index + 1)
+findUnique s index = if allUnique $ take 14 s then index else findUnique (tail s) (index + 1)
 
 findMarker :: String -> Int
-findMarker s = (4 +) $ findUnique s 0
+findMarker s = (14 +) $ findUnique s 0
 
 main :: IO ()
 main = do
