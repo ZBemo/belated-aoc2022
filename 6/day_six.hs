@@ -2,12 +2,12 @@ module Main where
 
 import Utils (removeCarriage)
 import Data.Map.Strict  (Map)
+import Data.Maybe (fromMaybe)
 import qualified Data.Map.Strict as Map
  
 allUnique :: String ->  Bool
-allUnique = not . any (\c -> c > 1) . consolidate Map.empty
-  where consolidate map [] = map
-        consolidate map (h:t) = consolidate (Map.alter (\x -> Just $ case x of Nothing -> 1; Just n -> (n + 1);) h map) t
+allUnique = not . any (\c -> c > 1) . consolidate 
+  where consolidate = foldr (Map.alter (Just . (+1) . (fromMaybe 0))) Map.empty
   
   
 
