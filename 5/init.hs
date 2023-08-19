@@ -3,7 +3,7 @@ module Init where
 data State = State [String] deriving (Show)
 
 --                         Tries   From    To
-data Procedure = Procedure Integer Int Int deriving (Show)
+data Procedure = Procedure Int Int Int deriving (Show)
 
 state :: State
 state = State ["PZMTRCN","ZBSTND","GTCFRQHM","ZRG","HRNZ","DLZPWSHF","MGCRZDW","QZWHLFJS","NWPQS"] -- dump of parseState $ removeCarriage crates

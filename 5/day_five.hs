@@ -38,10 +38,19 @@ applyProcedure  (State state) (Procedure amt from to)=
       error $ show (Procedure amt from to) ++ " " ++ show (State state)
   else State state
 
+popAt2 :: Int -> Int -> [String] -> ([String] , String)
+popAt2 i amt strings = (map (\(string, current_index) -> if current_index == i then drop amt string else string) enum_strings, foldr (\(string, current_index) acc -> if current_index == i then take amt string else acc) "" enum_strings)
+  where enum_strings = zip strings [1..]
 
--- applyProcedure2 :: State -> Procedure -> State
--- applyProcedure2  (State state) (Procedure amt from to) = 
---   let n = foldr (\_ (og, to)(popAt from state) 
+appendAt2 :: Int -> String -> [String] -> [String]
+appendAt2 i to_append strings = map (\(string, current_index) -> if current_index == i then (to_append ++ string) else string) $ zip strings [1..]
+
+applyProcedure2 :: State -> Procedure -> State
+applyProcedure2  (State state) (Procedure amt from to) =  
+  let (popped_state, popped) = popAt2 from amt state in 
+    let appended_state = appendAt2 to popped popped_state in
+      State appended_state
+    
 
 
 crateToLine :: Int -> Int
@@ -73,6 +82,6 @@ main = do
   crates <- readFile "crates"
   procedures <- readFile "procedures"
 
-  print $ showTop $ foldl applyProcedure state procedure_lines
+  print $ showTop $ foldl applyProcedure2 state procedure_lines
 
   return ()
